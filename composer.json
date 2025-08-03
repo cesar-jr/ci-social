@@ -1,0 +1,27 @@
+{
+    "name": "cesar-jr/ci-social",
+    "description": "A package for easy integration of OAuth2 logins",
+    "keywords": [
+        "oauth",
+        "codeigniter4"
+    ],
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "CesarJr\\Social\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Cesar Junior",
+            "email": "cesarmsjunior@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "codeigniter4/framework": "^4.0",
+        "guzzlehttp/guzzle": "^7.9",
+        "firebase/php-jwt": "^6.11",
+        "phpseclib/phpseclib": "^3.0"
+    }
+}
