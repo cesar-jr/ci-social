@@ -15,13 +15,6 @@ class TwitterProvider extends AbstractProvider
     protected $scopes = ['users.read', 'users.email', 'tweet.read'];
 
     /**
-     * Indicates if PKCE should be used.
-     *
-     * @var bool
-     */
-    protected $usesPKCE = true;
-
-    /**
      * The separating character for the requested scopes.
      *
      * @var string
@@ -95,6 +88,20 @@ class TwitterProvider extends AbstractProvider
     /**
      * {@inheritdoc}
      */
+    protected function getTokenFields($code)
+    {
+        $fields = parent::getTokenFields($code);
+
+        if (!$this->usesPKCE()) {
+            $fields['code_verifier'] = 'code';
+        }
+
+        return $fields;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getRefreshTokenResponse($refreshToken)
     {
         $response = $this->getHttpClient()->post($this->getTokenUrl(), [
@@ -119,6 +126,11 @@ class TwitterProvider extends AbstractProvider
 
         if ($this->isStateless()) {
             $fields['state'] = 'state';
+        }
+
+        if (!$this->usesPKCE()) {
+            $fields['code_challenge'] = 'code';
+            $fields['code_challenge_method'] = 'plain';
         }
 
         return $fields;
