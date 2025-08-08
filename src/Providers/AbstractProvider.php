@@ -163,7 +163,7 @@ abstract class AbstractProvider
 
         if ($this->usesState() || $this->usesPKCE()) {
 
-            $session = service('session');
+            $session = service('socialmemory');
 
             if ($this->usesState()) {
                 $session->set('state', $state = $this->getState());
@@ -291,9 +291,8 @@ abstract class AbstractProvider
             return false;
         }
 
-        $session = service('session');
-        $state = $session->get('state');
-        $session->remove('state');
+        $session = service('socialmemory');
+        $state = $session->pop('state');
 
         return empty($state) || $this->request->getGet('state') !== $state;
     }
@@ -342,9 +341,8 @@ abstract class AbstractProvider
         ];
 
         if ($this->usesPKCE()) {
-            $session = service('session');
-            $fields['code_verifier'] = $session->get('code_verifier');
-            $session->remove('code_verifier');
+            $session = service('socialmemory');
+            $fields['code_verifier'] = $session->pop('code_verifier');
         }
 
         return array_merge($fields, $this->parameters);
@@ -567,7 +565,7 @@ abstract class AbstractProvider
      */
     protected function getCodeChallenge()
     {
-        $session = service('session');
+        $session = service('socialmemory');
         $hashed = hash('sha256', $session->get('code_verifier'), true);
 
         return rtrim(strtr(base64_encode($hashed), '+/', '-_'), '=');

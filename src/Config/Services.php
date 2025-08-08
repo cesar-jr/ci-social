@@ -4,6 +4,7 @@ namespace CesarJr\Social\Config;
 
 use CodeIgniter\Config\BaseService;
 use CesarJr\Social\Services\Social;
+use CesarJr\Social\Services\SocialMemory;
 
 class Services extends BaseService
 {
@@ -14,5 +15,14 @@ class Services extends BaseService
         }
 
         return new Social();
+    }
+
+    public static function socialMemory(bool $getShared = true): SocialMemory
+    {
+        if ($getShared) {
+            return static::getSharedInstance('socialMemory');
+        }
+
+        return new SocialMemory();
     }
 }
