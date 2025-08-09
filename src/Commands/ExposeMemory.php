@@ -61,7 +61,7 @@ class ExposeMemory extends BaseCommand
     {
         $file = 'Services/SocialMemory.php';
         $replaces = [
-            'namespace CesarJr\\Social\\Services;'   => 'namespace Services;',
+            'namespace CesarJr\\Social\\Services;'   => 'namespace App\Services;',
         ];
 
         $this->copyAndReplace($file, $replaces);
@@ -88,7 +88,7 @@ class ExposeMemory extends BaseCommand
                     return static::getSharedInstance('socialMemory');
                 }
 
-                return new \Services\SocialMemory();
+                return new \App\Services\SocialMemory();
             }
 
         PHP;
