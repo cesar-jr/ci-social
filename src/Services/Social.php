@@ -150,7 +150,6 @@ class Social extends Manager
      */
     private function buildProvider($provider, $config)
     {
-        // talvez usar esse para fazer custom??
         $requiredKeys = ['client_id', 'client_secret', 'redirect'];
 
         $missingKeys = array_diff($requiredKeys, array_keys($config ?? []));
@@ -166,6 +165,8 @@ class Social extends Manager
             $config['client_id'],
             $config['client_secret'],
             $this->formatRedirectUrl($config),
+            $config['enable_pkce'] ?? null,
+            $config['enable_state'] ?? null,
             $config['guzzle'] ?? [],
         ))->scopes($config['scopes'] ?? []);
     }

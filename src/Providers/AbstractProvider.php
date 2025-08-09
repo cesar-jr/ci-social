@@ -110,10 +110,14 @@ abstract class AbstractProvider
      * @param string $clientSecret
      * @param string $redirectUrl
      * @param array $guzzle
+     * @param ?bool $enablePKCE
+     * @param ?bool $enableState
      * @return void
      */
-    public function __construct(IncomingRequest $request, $clientId, $clientSecret, $redirectUrl, $guzzle = [])
+    public function __construct(IncomingRequest $request, $clientId, $clientSecret, $redirectUrl, $enablePKCE, $enableState, $guzzle = [])
     {
+        $this->usesPKCE = $enablePKCE ?? config('Social')->enable_pkce_globally ?? $this->usesPKCE;
+        $this->stateless = !($enableState ?? config('Social')->enable_state_globally ?? !$this->stateless);
         $this->guzzle = $guzzle;
         $this->request = $request;
         $this->clientId = $clientId;
@@ -517,6 +521,18 @@ abstract class AbstractProvider
     }
 
     /**
+     * Indicates that the provider should operate as stateful.
+     * 
+     * @return $this
+     */
+    public function stateful()
+    {
+        $this->stateless = false;
+
+        return $this;
+    }
+
+    /**
      * Get the string used for session state.
      *
      * @return string
@@ -544,6 +560,18 @@ abstract class AbstractProvider
     public function enablePKCE()
     {
         $this->usesPKCE = true;
+
+        return $this;
+    }
+
+    /**
+     * Disables PKCE for the provider.
+     * 
+     * @return $this
+     */
+    public function disablePKCE()
+    {
+        $this->usesPKCE = false;
 
         return $this;
     }
