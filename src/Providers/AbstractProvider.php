@@ -3,6 +3,7 @@
 namespace CesarJr\Social\Providers;
 
 use CesarJr\Social\Exceptions\InvalidStateException;
+use CesarJr\Social\Exceptions\OAuthException;
 use CesarJr\Social\Token;
 use CesarJr\Social\Utilities\Str;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -248,6 +249,8 @@ abstract class AbstractProvider
         if ($this->hasInvalidState()) {
             throw new InvalidStateException;
         }
+
+        $this->checkForError();
 
         $response = $this->getAccessTokenResponse($this->getCode());
 
@@ -637,5 +640,18 @@ abstract class AbstractProvider
         $this->parameters = $parameters;
 
         return $this;
+    }
+
+    /**
+     * Checks for errors when callback is called.
+     * 
+     * @throws \CesarJr\Social\Exceptions\OAuthException
+     */
+    protected function checkForError()
+    {
+        $error = $this->request->getGet('error');
+        if (!empty($error)) {
+            throw new OAuthException($error, $this->request->getGet('error_description'), $this->request->getGet('error_uri'));
+        }
     }
 }
