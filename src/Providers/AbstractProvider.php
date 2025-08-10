@@ -102,6 +102,8 @@ abstract class AbstractProvider
      */
     protected $user;
 
+    protected string $state;
+
     /**
      * Create a new provider instance.
      * 
@@ -297,6 +299,7 @@ abstract class AbstractProvider
 
         $session = service('socialmemory');
         $state = $session->pop('state');
+        $this->state = $state;
 
         return empty($state) || $this->request->getGet('state') !== $state;
     }
@@ -533,13 +536,27 @@ abstract class AbstractProvider
     }
 
     /**
+     * Sets the state parameter
+     * 
+     * @param  string  $state
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
      * Get the string used for session state.
      *
      * @return string
      */
-    protected function getState()
+    public function getState()
     {
-        return Str::random(40);
+        $session = service('socialmemory');
+        return $this->state ?? ($this->state = ($session->get('state') ?? Str::random(40)));
     }
 
     /**
