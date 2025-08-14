@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/cesar-jr/ci-social)](LICENSE)
 [![PHP Version](https://img.shields.io/packagist/php-v/cesar-jr/ci-social)](https://packagist.org/packages/cesar-jr/ci-social)
 
-**CI Social** is a [CodeIgniter 4](https://codeigniter.com/) package inspired by [Laravel Socialite](https://laravel.com/docs/master/socialite), enabling seamless OAuth authentication with multiple providers.
+**CI Social** is a [CodeIgniter 4](https://codeigniter.com/) package ~~shamelessly copied from~~ inspired by [Laravel Socialite](https://laravel.com/docs/master/socialite), enabling seamless OAuth authentication with multiple providers.
 
 Currently supports:
 **Bitbucket, Facebook, GitHub, GitLab, Google, LinkedIn, Slack, Twitch, and Twitter**.
